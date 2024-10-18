@@ -21,7 +21,7 @@ func main() {
 	gin.SetMode(gin.DebugMode)
 	router.Use(CORSMiddleware())
 	//
-	godotenv.Load("./pkg/common/envs/.env")
+	godotenv.Load(".env")
 	port := os.Getenv("PORT")
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)
