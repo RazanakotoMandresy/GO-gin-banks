@@ -10,10 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type BankLogRequest struct {
-	Name      string `json:"name"`
-	Passwords string `json:"passwords"`
-}
+
 
 func (h handler) LoginAdmin(ctx *gin.Context) {
 	body := new(BankLogRequest)

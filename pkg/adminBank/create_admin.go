@@ -9,21 +9,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
-// Code to create an admin
-type BankAdminReq struct {
-	ID         uint32 `gorm:"id;primaryKey"`
-	Created_at time.Time
-	Updated_at time.Time
-	Deleted_at gorm.DeletedAt
-	Name       string `json:"name"`
-	Passwords  string `json:"passwords"`
-	RootPass   string `json:"root"`
-}
-
-func (h handler) CreateAdminAccount(ctx *gin.Context) {
+func (h handler) RegisterAdmin(ctx *gin.Context) {
 	body := BankAdminReq{}
 	if err := ctx.Bind(&body); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})

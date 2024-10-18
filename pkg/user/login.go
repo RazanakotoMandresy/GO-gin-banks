@@ -10,13 +10,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-type LoginRequest struct {
-	Email    string `json:"Email"`
-	Password string `json:"password"`
-}
+
 
 func (h handler) Login(ctx *gin.Context) {
-	body := new(LoginRequest)
+	body := new(loginRequest)
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return

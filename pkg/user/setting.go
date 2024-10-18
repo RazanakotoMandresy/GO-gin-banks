@@ -120,11 +120,6 @@ func unBlockAccount(h handler, user models.User, userUnblock string) error {
 	if err != nil {
 		return err
 	}
-	// user connected
-	// user, err := h.GetUserSingleUserFunc(uuid)
-	// if err != nil {
-	// 	return nil
-	// }
 	// TODO Algo temporaire vu que le code est nul enleve dans l'array les noms dejas dedans
 	go func() {
 		blockedUser := []string{}

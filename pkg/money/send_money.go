@@ -13,11 +13,6 @@ import (
 	"github.com/lib/pq"
 )
 
-// ny uuid anaty params de ny uuid an'i envoyeur
-type sendMoneyRequest struct {
-	Value int32 `json:"value"`
-}
-
 func (h handler) SendMoney(ctx *gin.Context) {
 	// extracttion de l'uuid depuis le bearer
 	uuidConnectedStr, err := middleware.ExtractTokenUUID(ctx)
@@ -135,7 +130,7 @@ func getTotals(money pq.Int32Array) int32 {
 		totals += money[i]
 	}
 	return totals
-}	
+}
 
 // user req que se soit uuid na appUserName
 func (h handler) GetUserByuuid(userReq string) (*models.User, error) {

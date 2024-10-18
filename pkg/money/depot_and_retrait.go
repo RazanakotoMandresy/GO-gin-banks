@@ -9,12 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type DepoRetraiReq struct {
-	Value     int32  `json:"value"`
-	Lieux     string `json:"lieux"`
-	Passwords string `json:"passwords"`
-}
-
 func (h handler) Depot(ctx *gin.Context) {
 	usr, err := middleware.ExtractTokenUUID(ctx)
 	if err != nil {

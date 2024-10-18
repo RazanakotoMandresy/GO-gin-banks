@@ -9,13 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UpdateRequest struct {
-	AppUserName string `json:"AppUserName"`
-	Residance   string `json:"residance"`
-}
-
 func (h handler) UpdateInfo(ctx *gin.Context) {
-	body := new(UpdateRequest)
+	body := new(updateRequest)
 	if err := ctx.Bind(&body); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"err": err.Error(),

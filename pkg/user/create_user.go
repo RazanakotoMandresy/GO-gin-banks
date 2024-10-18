@@ -12,25 +12,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-
-	"github.com/joho/godotenv"
 )
 
 // create User mitovy amin'i register ihany
-type UserRequest struct {
-	AppUserName       string
-	Name              string
-	FirstName         string
-	Moneys            uint
-	Password          string
-	Date_de_naissance string
-	Residance         string
-	Email             string
-}
 
 func (h handler) CreateUser(ctx *gin.Context) {
-	godotenv.Load("../common/envs/.env")
-	body := new(UserRequest)
+	body := new(registerRequest)
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})
 		fmt.Println(err)
@@ -60,7 +47,6 @@ func (h handler) CreateUser(ctx *gin.Context) {
 		if strings.ContainsAny(strErr, "23505") {
 			err := fmt.Sprintf("Problemes de duplication : -%v", strErr)
 			ctx.JSON(http.StatusBadRequest, err)
-			fmt.Println(err)
 			return
 		}
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)

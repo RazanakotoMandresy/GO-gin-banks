@@ -8,11 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type BankReq struct {
-	Money    int32  `json:"money"`
-	Lieux    string `json:"lieux"`
-	Password string `json:"password"`
-}
+
 
 // code create bank
 func (h handler) CreateBank(ctx *gin.Context) {

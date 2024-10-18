@@ -11,8 +11,6 @@ type handler struct {
 	DB *gorm.DB
 }
 
-// var arras = []string{}
-
 func TransactionRoutes(router *gin.Engine, db *gorm.DB) {
 	h := &handler{
 		DB: db,

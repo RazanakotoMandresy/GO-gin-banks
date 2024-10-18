@@ -8,14 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type topTrans struct {
-	SentTo     string `json:"sentTo"`
-	Totals     int    `json:"sommeTrans"`
-	UserName   string `json:"userName"`
-	ImageSento string `json:"SentToImg"`
-	ImgSender  string `json:"SentByImg"`
-}
-
 func (h handler) GetTopTrans(ctx *gin.Context) {
 	uuid, err := middleware.ExtractTokenUUID(ctx)
 
