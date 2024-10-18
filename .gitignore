@@ -1,4 +1,5 @@
 bin/*
-pkg/common/envs/.env
 upload/*
 .vscode
+.env
+vendor
