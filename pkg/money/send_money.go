@@ -18,16 +18,15 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	uuidConnectedStr, err := middleware.ExtractTokenUUID(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
+
 		return
 	}
-	// uuid du recepteur params dans l'url
-	uuidRecepteur := ctx.Param("uuid")
+
+	userToSend := ctx.Param("uuid")
 	body := new(sendMoneyRequest)
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
 
 		return
 	}
@@ -35,23 +34,20 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	// code si l'on veux envoyer une somme inferieur a 1
 	if value < 1 {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "on ne peut pas envoyer une somme aussi minime"})
-		fmt.Print(err)
 
 		return
 	}
 	userConnected, err := h.GetUserByuuid(uuidConnectedStr)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
-
 		return
 
 	}
 	// maka anle userRecepteur tokony par uuid na par AppUserName
-	userRecepteur, err := h.GetUserByuuid(uuidRecepteur)
+	userRecepteur, err := h.GetUserByuuid(userToSend)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
+
 		return
 	}
 	_, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
@@ -63,7 +59,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	if value > userConnected.Moneys {
 		err := fmt.Errorf("impossible d'envoyer votre argent %v l'argent que vous voulez envoyer est %v", userConnected.Moneys, value)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
+
 		return
 	}
 	// check si l'userConnecter est la meme que celui qui il essaye d'envoyer de l'argent
@@ -71,7 +67,6 @@ func (h handler) SendMoney(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "vous ne pouvez pas envoyer de l'argent a vous meme "})
 		return
 	}
-
 	// 	message si tous se passe bien
 	// message := fmt.Sprintf("%v a envoye un argent d'un montant de %v a %v", userConnected.AppUserName, value, userRecepteur.AppUserName)
 	userConnected.Moneys = userConnected.Moneys - value
@@ -83,7 +78,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	moneyTransaction, err := h.dbManipulationSendMoney(userConnected, userRecepteur, body)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-		fmt.Print(err)
+
 		return
 	}
 	ctx.JSON(http.StatusOK, &moneyTransaction)
@@ -94,7 +89,7 @@ func (h handler) dbManipulationSendMoney(userConnected, userRecepteur *models.Us
 	res := h.DB.Where("send_by = ? AND sent_to = ?", userConnected.UUID, userRecepteur.UUID).First(&moneyTransaction)
 	resume := fmt.Sprintf("%v a envoyer la somme de %v a %v a l'instant%v ", userConnected.AppUserName, body.Value, userRecepteur.AppUserName, time.Now())
 	if res.Error != nil {
-		fmt.Printf("transaction entre send_by %v et sent_to %v inexistante creation d'une nouvelle...", userConnected.UUID, userRecepteur.UUID)
+		fmt.Printf("no transaction betwen %s and %s creating a new one...", userConnected.UUID, userRecepteur.UUID)
 		moneyTransaction.ID = uuid.New()
 		moneyTransaction.SendBy = userConnected.UUID
 		moneyTransaction.SentTo = userRecepteur.UUID
