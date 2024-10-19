@@ -16,10 +16,6 @@ func (h handler) LoginAdmin(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	if body.Name == "" || body.Passwords == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "you need to complete all the inputs"})
-		return
-	}
 	requiredField := map[string]string{
 		"name":      body.Name,
 		"passwords": body.Passwords,
