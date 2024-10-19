@@ -17,14 +17,16 @@ func (h handler) RegisterAdmin(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})
 		return
 	}
-	if body.RootPass == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "les mots de passes de super admin est obligatoire"})
+	requriredField := map[string]string{
+		"name":      body.Name,
+		"passwords": body.Passwords,
+		"root":      body.RootPass,
+	}
+	if !middleware.ValidateRequiredFields(ctx, body, requriredField) {
 		return
 	}
 	err := middleware.IsTruePassword("$2a$05$/8PnBDSt7ZAxkdtW6c7.vOOusUebMZzT8ZMF4PtPc.DkI09XBi0I2", body.RootPass)
 	// doesn't work
-	// err := middleware.IsTruePassword(os.Getenv("SECRET_ADMIN"), body.RootPass)
-
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return

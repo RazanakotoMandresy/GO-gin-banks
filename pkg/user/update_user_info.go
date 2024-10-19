@@ -3,6 +3,7 @@ package user
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
@@ -39,8 +40,10 @@ func (h handler) UpdateInfo(ctx *gin.Context) {
 	// save des modif
 	result := h.DB.Save(&user)
 	if result.Error != nil {
-		if result.Error.Error() == "ERROR: duplicate key value violates unique constraint \"uni_users_app_user_name\" (SQLSTATE 23505)" {
-			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fmt.Sprintf("l'appUserName avec %v est deja utiliser par un autre utilisateur ", body.AppUserName)})
+		strErr := result.Error.Error()
+		// cannot use a real check cz the errors happen in differents languages
+		if strings.ContainsAny(strErr, "23505") {
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fmt.Sprintf("cannot duplicate: -%v", strErr)})
 			return
 		}
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": result.Error.Error()})

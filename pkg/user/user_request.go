@@ -1,13 +1,13 @@
 package user
 
 type registerRequest struct {
-	AppUserName       string
-	Name              string
-	FirstName         string
-	Password          string
-	BirthDate string
-	Residance         string
-	Email             string
+	AppUserName string
+	Name        string
+	FirstName   string
+	Password    string
+	BirthDate   string
+	Residance   string
+	Email       string
 }
 type loginRequest struct {
 	Email    string `json:"email"`

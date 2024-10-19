@@ -19,7 +19,7 @@ func (h handler) SearchBanks(ctx *gin.Context) {
 	banquePlace := ctx.Query("place")
 	var bank = models.Bank{}
 	if result := h.DB.Where("maintenned_by = ? AND lieux = ?", uuidAdmin, banquePlace).First(&bank); result.Error != nil {
-		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": fmt.Sprintf("la place %v n'existe pas ou bien ce n'es pas vous qui l'aver cree", banquePlace)})
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": fmt.Sprintf("the bank %s doesn't exist or you are not the owner", banquePlace)})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"res": &bank})

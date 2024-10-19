@@ -20,6 +20,13 @@ func (h handler) LoginAdmin(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "you need to complete all the inputs"})
 		return
 	}
+	requiredField := map[string]string{
+		"name":      body.Name,
+		"passwords": body.Passwords,
+	}
+	if !middleware.ValidateRequiredFields(ctx, body, requiredField) {
+		return
+	}
 	admin := models.Admin{Name: body.Name}
 	// only the admin name is not empty
 	GetHashedAdminPassword := h.DB.First(&admin, admin)

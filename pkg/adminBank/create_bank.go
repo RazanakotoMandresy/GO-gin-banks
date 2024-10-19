@@ -8,11 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
-// code create bank
 func (h handler) CreateBank(ctx *gin.Context) {
-
 	body := new(BankReq)
 	// mamadika anle uuidAny ho string
 	uuid, err := middleware.ExtractTokenUUID(ctx)
