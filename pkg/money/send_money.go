@@ -97,23 +97,16 @@ func (h handler) dbManipulationSendMoney(userConnected, userRecepteur *models.Us
 		moneyTransaction.SendToImg = userRecepteur.Image
 		moneyTransaction.SentToName = userRecepteur.AppUserName
 		moneyTransaction.MoneyTransite = append(moneyTransaction.MoneyTransite, body.Value)
-		// moneyTransaction.TransResum = append(moneyTransaction.TransResum, resume)
+
 		result := h.DB.Create(moneyTransaction)
 		if result.Error != nil {
 			return nil, fmt.Errorf("creationraw %v", result.Error)
 		}
 		return &moneyTransaction, nil
 	}
-	fmt.Println("la transaction entre les deux utilisateur existe dejas")
-	moneyTransaction.Resume = resume
-	moneyTransaction.SentToName = userRecepteur.AppUserName
-	// moneyTransaction.TransResum = append(moneyTransaction.TransResum, resume)
-	moneyTransaction.SendByImg = userConnected.Image
-	moneyTransaction.SendToImg = userRecepteur.Image
+	fmt.Println("transaction already exist")
 	moneyTransaction.MoneyTransite = append(moneyTransaction.MoneyTransite, body.Value)
-	totals := getTotals(moneyTransaction.MoneyTransite)
-	// totals logique
-	moneyTransaction.Totals = totals
+	moneyTransaction.Totals = getTotals(moneyTransaction.MoneyTransite)
 	h.DB.Save(&moneyTransaction)
 	return &moneyTransaction, nil
 }
