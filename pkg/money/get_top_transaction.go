@@ -32,6 +32,9 @@ func (h handler) GetTopTrans(ctx *gin.Context) {
 			ImgSender:  moneys.SendByImg,
 		})
 	}
-
+	if len(userTosendSlicesJsoned) == 0 {
+		ctx.JSON(http.StatusOK, gin.H{"res": "you haven't send money to anyone yet"})
+		return
+	}
 	ctx.JSON(http.StatusOK, userTosendSlicesJsoned)
 }
