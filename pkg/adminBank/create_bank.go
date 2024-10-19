@@ -1,6 +1,7 @@
 package adminbank
 
 import (
+	"math/rand"
 	"net/http"
 
 	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
@@ -45,6 +46,7 @@ func (h handler) CreateBank(ctx *gin.Context) {
 	bank := models.Bank{
 		Money:        body.Money,
 		Lieux:        body.Lieux,
+		ID:           rand.Uint32(),
 		MaintennedBy: admin.UUID.String(),
 	}
 
@@ -58,6 +60,6 @@ func (h handler) CreateBank(ctx *gin.Context) {
 	admin.TotalSend = admin.TotalSend + int(body.Money)
 	h.DB.Save(&admin)
 	ctx.JSON(http.StatusOK, gin.H{
-		"result": bank,
+		"res": bank,
 	})
 }
