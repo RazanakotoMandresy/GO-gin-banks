@@ -10,8 +10,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-
-
 func (h handler) LoginAdmin(ctx *gin.Context) {
 	body := new(BankLogRequest)
 	if err := ctx.Bind(&body); err != nil {
@@ -19,10 +17,11 @@ func (h handler) LoginAdmin(ctx *gin.Context) {
 		return
 	}
 	if body.Name == "" || body.Passwords == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "tous les champ sont obligatoire"})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "you need to complete all the inputs"})
 		return
 	}
 	admin := models.Admin{Name: body.Name}
+	// only the admin name is not empty
 	GetHashedAdminPassword := h.DB.First(&admin, admin)
 	if GetHashedAdminPassword.Error != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, GetHashedAdminPassword.Error.Error())
@@ -33,12 +32,11 @@ func (h handler) LoginAdmin(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	tokenString, err := middleware.TokenManage(jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":  admin.ID,
 		"uuid": admin.UUID,
-		"exp":  time.Now().Add(time.Hour * 24 * 30).Unix(),
-	})
-	tokenString, err := middleware.TokenManage(token, ctx)
+		"exp":  time.Now().Add(time.Hour * 24).Unix(),
+	}), ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})
 		return

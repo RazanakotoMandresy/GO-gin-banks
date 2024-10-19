@@ -4,17 +4,23 @@ type registerRequest struct {
 	AppUserName       string
 	Name              string
 	FirstName         string
-	Moneys            uint
 	Password          string
 	Date_de_naissance string
 	Residance         string
 	Email             string
 }
 type loginRequest struct {
-	Email    string `json:"Email"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 type updateRequest struct {
 	AppUserName string `json:"AppUserName"`
 	Residance   string `json:"residance"`
+}
+type SettingReq struct {
+	RemoveAllEp     bool   `json:"rmEpargne"`
+	DeleteMyAccount bool   `json:"rmAccount"`
+	BlockAccount    string `json:"blockAcc"`
+	UnBlockAccount  string `json:"unblockAcc"`
+	// miandry inspi block unblock
 }

@@ -11,13 +11,7 @@ import (
 	"net/http"
 )
 
-type SettingReq struct {
-	RemoveAllEp     bool   `json:"rmEpargne"`
-	DeleteMyAccount bool   `json:"rmAccount"`
-	BlockAccount    string `json:"blockAcc"`
-	UnBlockAccount  string `json:"unblockAcc"`
-	// miandry inspi block unblock
-}
+
 
 func (h handler) SettingUser(ctx *gin.Context) {
 	body := new(SettingReq)
@@ -121,16 +115,14 @@ func unBlockAccount(h handler, user models.User, userUnblock string) error {
 		return err
 	}
 	// TODO Algo temporaire vu que le code est nul enleve dans l'array les noms dejas dedans
-	go func() {
-		blockedUser := []string{}
-		for _, appUserName := range user.BlockedAcc {
-			if appUserName == userToUnblock.AppUserName {
-				continue
-			}
-			blockedUser = append(blockedUser, appUserName)
+	blockedUser := []string{}
+	for _, appUserName := range user.BlockedAcc {
+		if appUserName == userToUnblock.AppUserName {
+			continue
 		}
-		user.BlockedAcc = blockedUser
-		h.DB.Save(&user)
-	}()
+		blockedUser = append(blockedUser, appUserName)
+	}
+	user.BlockedAcc = blockedUser
+	h.DB.Save(&user)
 	return nil
 }
