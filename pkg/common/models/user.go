@@ -9,10 +9,9 @@ import (
 
 // modles user
 type User struct {
-	ID          uint32 `gorm:"id;primarykey"`
 	Created_at  time.Time
 	Updated_at  time.Time
-	UUID        string `gorm:"uuid"`
+	UUID        string `gorm:"uuid;primarykey"`
 	Deleted_at  gorm.DeletedAt
 	AppUserName string         `gorm:"unique"`
 	Name        string         `json:"name"`

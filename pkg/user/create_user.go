@@ -43,7 +43,6 @@ func (h handler) CreateUser(ctx *gin.Context) {
 		Email:       body.Email,
 		Created_at:  time.Now(),
 		Updated_at:  time.Now(),
-		ID:          uuid.New().ID(),
 		Role:        "user",
 		Image:       "imgDef/defaultPP.jpg",
 		BlockedAcc:  []string{},
@@ -60,7 +59,6 @@ func (h handler) CreateUser(ctx *gin.Context) {
 		return
 	}
 	tokenString, _ := middleware.TokenManage(jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":  user.ID,
 		"uuid": user.UUID,
 		"role": user.Role,
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),

@@ -36,7 +36,6 @@ func (h handler) Login(ctx *gin.Context) {
 		return
 	}
 	tokenString, err := middleware.TokenManage(jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":  user.ID,
 		"uuid": user.UUID,
 		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 	}), ctx)
