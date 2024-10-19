@@ -17,8 +17,12 @@ func (h handler) Login(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	if body.Email == "" || body.Password == "" {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "you need to complete all the inputs"})
+	requiredFields := map[string]string{
+		"Email":    body.Email,
+		"Password": body.Password,
+	}
+	if !middleware.ValidateRequiredFields(ctx, body, requiredFields) {
+		// error ctx alreqdy in the middleware
 		return
 	}
 	user := models.User{Email: body.Email}

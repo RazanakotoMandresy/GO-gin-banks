@@ -5,7 +5,7 @@ type registerRequest struct {
 	Name              string
 	FirstName         string
 	Password          string
-	Date_de_naissance string
+	BirthDate string
 	Residance         string
 	Email             string
 }
@@ -22,5 +22,4 @@ type SettingReq struct {
 	DeleteMyAccount bool   `json:"rmAccount"`
 	BlockAccount    string `json:"blockAcc"`
 	UnBlockAccount  string `json:"unblockAcc"`
-	// miandry inspi block unblock
 }
