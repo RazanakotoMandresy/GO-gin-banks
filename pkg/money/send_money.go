@@ -18,7 +18,6 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	uuidConnectedStr, err := middleware.ExtractTokenUUID(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-
 		return
 	}
 
@@ -30,11 +29,10 @@ func (h handler) SendMoney(ctx *gin.Context) {
 
 		return
 	}
-	value := body.Value
-	// code si l'on veux envoyer une somme inferieur a 1
-	if value < 1 {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "on ne peut pas envoyer une somme aussi minime"})
 
+	value := body.Value
+	if value == 0 {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "value cannot be nul"})
 		return
 	}
 	userConnected, err := h.GetUserByuuid(uuidConnectedStr)
