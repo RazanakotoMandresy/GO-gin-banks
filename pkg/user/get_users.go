@@ -8,9 +8,9 @@ import (
 )
 
 type userRes struct {
-	UUID        string
-	AppUserName string
-	Email       string
+	UUID        string `json:"uuid"`
+	AppUserName string `json:"appUserName"`
+	Email       string `json:"Email"`
 }
 
 func (h handler) GetUsers(ctx *gin.Context) {
