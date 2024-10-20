@@ -2,7 +2,7 @@ package adminbank
 
 // controller admin , code who all the admins action
 import (
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

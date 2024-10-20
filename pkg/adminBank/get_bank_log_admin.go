@@ -3,8 +3,8 @@ package adminbank
 import (
 	"net/http"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +19,6 @@ func (h handler) GetBankLogAdmin(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": result.Error.Error()})
 		return
 	}
-	
+
 	ctx.JSON(http.StatusOK, gin.H{"res": &bank})
 }

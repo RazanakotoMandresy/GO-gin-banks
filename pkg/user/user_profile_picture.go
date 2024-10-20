@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
 )
 

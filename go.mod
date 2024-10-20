@@ -1,4 +1,4 @@
-module github.com/RazanakotoMandresy/bank-app-aout/backend
+module github.com/RazanakotoMandresy/go-gin-banks
 
 go 1.22.3
 

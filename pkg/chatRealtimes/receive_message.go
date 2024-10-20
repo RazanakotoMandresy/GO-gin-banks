@@ -1,10 +1,11 @@
 package chatrealtimes
 
 import (
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 func (h handler) ReceiveMessage(ctx *gin.Context) {

@@ -3,7 +3,7 @@ package adminbank
 import (
 	"fmt"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
 )
 
 func (h handler) GetAdminUUID(adminUUID string) (*models.Admin, error) {

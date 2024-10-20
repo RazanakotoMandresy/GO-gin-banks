@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

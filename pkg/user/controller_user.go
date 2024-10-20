@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -28,4 +28,3 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	routes.PATCH("/", middleware.RequireAuth, h.UpdateInfo)
 	routes.PATCH("/setting", middleware.RequireAuth, h.SettingUser)
 }
-	

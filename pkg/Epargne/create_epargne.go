@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/middleware"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -18,7 +18,7 @@ import (
 // Date maka ny jours ou du mois anaovana anle epargne
 type CreateEpargneRequest struct {
 	Name  string `json:"name"`
-	Value int32    `json:"ValueEpargne"`
+	Value int32  `json:"ValueEpargne"`
 	// tous les nombre dates du mois l'argent sera Epargner automatiquement
 	Date uint   `json:"DayEpargne"`
 	Type string `json:"type"`

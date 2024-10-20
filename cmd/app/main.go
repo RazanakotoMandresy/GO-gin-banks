@@ -5,13 +5,12 @@ import (
 	"log"
 	"os"
 
-	epargne "github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/Epargne"
-	adminbank "github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/adminBank"
-	chatrealtimes "github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/chatRealtimes"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/db"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/money"
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/user"
-
+	epargne "github.com/RazanakotoMandresy/go-gin-banks/pkg/Epargne"
+	adminbank "github.com/RazanakotoMandresy/go-gin-banks/pkg/adminBank"
+	chatrealtimes "github.com/RazanakotoMandresy/go-gin-banks/pkg/chatRealtimes"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/db"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/money"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/user"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

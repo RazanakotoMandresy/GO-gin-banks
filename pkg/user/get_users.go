@@ -3,7 +3,7 @@ package user
 import (
 	"net/http"
 
-	"github.com/RazanakotoMandresy/bank-app-aout/backend/pkg/common/models"
+	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
 	"github.com/gin-gonic/gin"
 )
 
