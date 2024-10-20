@@ -48,11 +48,11 @@ func (h handler) SendMoney(ctx *gin.Context) {
 
 		return
 	}
-	_, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
-	if found {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fmt.Sprintf("vous avez deja bloquer %v", userRecepteur.AppUserName)})
-		return
-	}
+	// _, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
+	// if found {
+	// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fmt.Sprintf("vous avez deja bloquer %v", userRecepteur.AppUserName)})
+	// 	return
+	// }
 	// check si l'envoyeur essayent d'envoyer plus d'argent que ce qu'il en a
 	if value > userConnected.Moneys {
 		err := fmt.Errorf("impossible d'envoyer votre argent %v l'argent que vous voulez envoyer est %v", userConnected.Moneys, value)
@@ -79,11 +79,19 @@ func (h handler) SendMoney(ctx *gin.Context) {
 
 		return
 	}
-	ctx.JSON(http.StatusOK, &moneyTransaction)
+	ctx.JSON(http.StatusOK, gin.H{
+		"moneyTransaction": &moneyTransaction,
+		"userSender":       &userConnected,
+		"userReceive":      &userToSend,
+	})
 }
 
 func (h handler) dbManipulationSendMoney(userConnected, userRecepteur *models.User, body *sendMoneyRequest) (*models.Money, error) {
 	var moneyTransaction models.Money
+	n, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
+	if found {
+		return nil, fmt.Errorf("user with uuid %s already blocked position : %v all blocekdAccount: %v", userRecepteur.UUID, n , userConnected.BlockedAcc )
+	}
 	res := h.DB.Where("send_by = ? AND sent_to = ?", userConnected.UUID, userRecepteur.UUID).First(&moneyTransaction)
 	resume := fmt.Sprintf("%v a envoyer la somme de %v a %v a l'instant%v ", userConnected.AppUserName, body.Value, userRecepteur.AppUserName, time.Now())
 	if res.Error != nil {
@@ -97,7 +105,6 @@ func (h handler) dbManipulationSendMoney(userConnected, userRecepteur *models.Us
 		moneyTransaction.SendToImg = userRecepteur.Image
 		moneyTransaction.SentToName = userRecepteur.AppUserName
 		moneyTransaction.MoneyTransite = append(moneyTransaction.MoneyTransite, body.Value)
-
 		result := h.DB.Create(moneyTransaction)
 		if result.Error != nil {
 			return nil, fmt.Errorf("creationraw %v", result.Error)

@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
@@ -10,8 +11,6 @@ import (
 
 	"net/http"
 )
-
-
 
 func (h handler) SettingUser(ctx *gin.Context) {
 	body := new(SettingReq)
@@ -58,7 +57,7 @@ func (h handler) SettingUser(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, "ok")
+	ctx.JSON(http.StatusOK, gin.H{"res": fmt.Sprintf("option %v clicked", body)})
 }
 func removeAllEpFunc(h handler, uuidUser string) error {
 	var epargne models.Epargne
