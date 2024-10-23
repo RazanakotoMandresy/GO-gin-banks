@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ValidateRequiredFields(ctx *gin.Context, body interface{}, fields map[string]string) bool {
+func ValidateRequiredFields(ctx *gin.Context, fields map[string]string) bool {
 	for fieldName, fieldValue := range fields {
 		if fieldValue == "" {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fieldName + " is required"})

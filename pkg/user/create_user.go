@@ -27,7 +27,7 @@ func (h handler) CreateUser(ctx *gin.Context) {
 		"Name":        body.Name,
 		"Password":    body.Password,
 	}
-	if !middleware.ValidateRequiredFields(ctx, body, requiredFields) {
+	if !middleware.ValidateRequiredFields(ctx, requiredFields) {
 		return
 	}
 	passwordHashed := middleware.HashPassword(body.Password)

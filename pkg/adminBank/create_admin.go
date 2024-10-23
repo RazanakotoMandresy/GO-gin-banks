@@ -22,7 +22,7 @@ func (h handler) RegisterAdmin(ctx *gin.Context) {
 		"passwords": body.Passwords,
 		"root":      body.RootPass,
 	}
-	if !middleware.ValidateRequiredFields(ctx, body, requriredField) {
+	if !middleware.ValidateRequiredFields(ctx, requriredField) {
 		return
 	}
 	err := middleware.IsTruePassword("$2a$05$/8PnBDSt7ZAxkdtW6c7.vOOusUebMZzT8ZMF4PtPc.DkI09XBi0I2", body.RootPass)

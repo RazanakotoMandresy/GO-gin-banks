@@ -21,7 +21,7 @@ func (h handler) Login(ctx *gin.Context) {
 		"Email":    body.Email,
 		"Password": body.Password,
 	}
-	if !middleware.ValidateRequiredFields(ctx, body, requiredFields) {
+	if !middleware.ValidateRequiredFields(ctx, requiredFields) {
 		// error ctx alreqdy in the middleware
 		return
 	}

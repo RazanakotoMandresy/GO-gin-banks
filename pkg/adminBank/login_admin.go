@@ -20,7 +20,7 @@ func (h handler) LoginAdmin(ctx *gin.Context) {
 		"name":      body.Name,
 		"passwords": body.Passwords,
 	}
-	if !middleware.ValidateRequiredFields(ctx, body, requiredField) {
+	if !middleware.ValidateRequiredFields(ctx, requiredField) {
 		return
 	}
 	admin := models.Admin{Name: body.Name}
