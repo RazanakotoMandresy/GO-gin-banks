@@ -26,10 +26,8 @@ func (h handler) SendMoney(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-
 		return
 	}
-
 	value := body.Value
 	if value == 0 {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "value cannot be nul"})
@@ -39,25 +37,17 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
-
 	}
 	// maka anle userRecepteur tokony par uuid na par AppUserName
 	userRecepteur, err := h.GetUserByuuid(userToSend)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-
 		return
 	}
-	// _, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
-	// if found {
-	// 	ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": fmt.Sprintf("vous avez deja bloquer %v", userRecepteur.AppUserName)})
-	// 	return
-	// }
 	// check si l'envoyeur essayent d'envoyer plus d'argent que ce qu'il en a
 	if value > userConnected.Moneys {
 		err := fmt.Errorf("impossible d'envoyer votre argent %v l'argent que vous voulez envoyer est %v", userConnected.Moneys, value)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-
 		return
 	}
 	// check si l'userConnecter est la meme que celui qui il essaye d'envoyer de l'argent
@@ -76,7 +66,6 @@ func (h handler) SendMoney(ctx *gin.Context) {
 	moneyTransaction, err := h.dbManipulationSendMoney(userConnected, userRecepteur, body)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
-
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{
@@ -90,7 +79,7 @@ func (h handler) dbManipulationSendMoney(userConnected, userRecepteur *models.Us
 	var moneyTransaction models.Money
 	n, found := slices.BinarySearch(userConnected.BlockedAcc, userRecepteur.AppUserName)
 	if found {
-		return nil, fmt.Errorf("user with uuid %s already blocked position : %v all blocekdAccount: %v", userRecepteur.UUID, n , userConnected.BlockedAcc )
+		return nil, fmt.Errorf("user with uuid %s already blocked position : %v all blocekdAccount: %v", userRecepteur.UUID, n, userConnected.BlockedAcc)
 	}
 	res := h.DB.Where("send_by = ? AND sent_to = ?", userConnected.UUID, userRecepteur.UUID).First(&moneyTransaction)
 	resume := fmt.Sprintf("%v a envoyer la somme de %v a %v a l'instant%v ", userConnected.AppUserName, body.Value, userRecepteur.AppUserName, time.Now())
