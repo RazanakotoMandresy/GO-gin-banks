@@ -1,6 +1,7 @@
 package money
 
 import (
+	// "fmt"
 	"net/http"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
@@ -18,7 +19,7 @@ func (h handler) HistoricTransaction(ctx *gin.Context) {
 	var money []models.Money
 	result := h.DB.Find(&money, "send_by = ?", uuid)
 	if result.Error != nil {
-		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": result.Error})
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": result.Error.Error()})
 		return
 	}
 	if len(money) == 0 {
