@@ -13,5 +13,6 @@ type DepoRetraiReq struct {
 	Passwords string `json:"passwords"`
 }
 type sendMoneyRequest struct {
-	Value int32 `json:"value"`
+	Value     int32  `json:"value"`
+	Passwords string `json:"password"`
 }
