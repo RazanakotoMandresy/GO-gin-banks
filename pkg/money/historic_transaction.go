@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h handler) GetTopTrans(ctx *gin.Context) {
+func (h handler) HistoricTransaction(ctx *gin.Context) {
 	uuid, err := middleware.ExtractTokenUUID(ctx)
 
 	if err != nil {
@@ -21,20 +21,9 @@ func (h handler) GetTopTrans(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": result.Error})
 		return
 	}
-	userTosendSlicesJsoned := []topTrans{}
-	// img for ui
-	for _, moneys := range money {
-		userTosendSlicesJsoned = append(userTosendSlicesJsoned, topTrans{
-			SentTo:     moneys.SentTo,
-			Totals:     int(moneys.Totals),
-			UserName:   moneys.SentToName,
-			ImageSento: moneys.SendToImg,
-			ImgSender:  moneys.SendByImg,
-		})
-	}
-	if len(userTosendSlicesJsoned) == 0 {
+	if len(money) == 0 {
 		ctx.JSON(http.StatusOK, gin.H{"res": "you haven't send money to anyone yet"})
 		return
 	}
-	ctx.JSON(http.StatusOK, userTosendSlicesJsoned)
+	ctx.JSON(http.StatusOK, money)
 }
