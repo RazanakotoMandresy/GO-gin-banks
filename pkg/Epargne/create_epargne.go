@@ -57,7 +57,7 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		Value:        body.Value,
 		DayPerMounth: body.Date,
 		Type:         body.Type,
-		UserUUID:     user.UUID,
+		OwnerUUID:     user.UUID,
 	}
 	h.DB.Create(&epargne)
 	ctx.JSON(http.StatusOK, gin.H{"epargne": &epargne, "user": &user})

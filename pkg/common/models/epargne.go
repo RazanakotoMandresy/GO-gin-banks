@@ -14,5 +14,5 @@ type Epargne struct {
 	DayPerMounth uint
 	Type         string
 	Value        int32
-	UserUUID     string
+	OwnerUUID     string
 }
