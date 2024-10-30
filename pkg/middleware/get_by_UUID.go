@@ -7,10 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type Get interface {
-	User() (*models.User, error)
-	Admin() (*models.Admin, error)
-}
 type User struct {
 	userModel  models.User
 	Db         *gorm.DB
@@ -18,7 +14,6 @@ type User struct {
 }
 
 func (u User) User() (*models.User, error) {
-	// var user models.User
 	uuidToFind := u.UuidToFind
 	res := u.Db.Where("uuid = ? OR app_user_name = ?", uuidToFind, uuidToFind).First(&u.userModel)
 	if res.Error != nil {
