@@ -29,7 +29,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "value cannot be nul"})
 		return
 	}
-	userConnected, err := h.GetUserByuuid(uuidConnectedStr)
+	userConnected, err := middleware.GetUserUUID(h.DB, uuidConnectedStr)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -39,7 +39,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 		return
 	}
 	// ctx params userTo send money UUID
-	userRecepteur, err := h.GetUserByuuid(ctx.Param("uuid"))
+	userRecepteur, err := middleware.GetUserUUID(h.DB, ctx.Param("uuid"))
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -96,12 +96,12 @@ func (h handler) dbManipulationSendMoney(body *sendMoneyRequest, userConnected, 
 	return &moneyTransaction, nil
 }
 
-// user req que se soit uuid na appUserName
-func (h handler) GetUserByuuid(userReq string) (*models.User, error) {
-	var users models.User
-	res := h.DB.Where("uuid = ? OR app_user_name = ?", userReq, userReq).First(&users)
-	if res.Error != nil {
-		return nil, fmt.Errorf(" %v: uuid or AppUserName notFound", userReq)
-	}
-	return &users, nil
-}
+// // user req que se soit uuid na appUserName
+// func (h handler) GetUserByuuid(userReq string) (*models.User, error) {
+// 	var users models.User
+// 	res := h.DB.Where("uuid = ? OR app_user_name = ?", userReq, userReq).First(&users)
+// 	if res.Error != nil {
+// 		return nil, fmt.Errorf(" %v: uuid or AppUserName notFound", userReq)
+// 	}
+// 	return &users, nil
+// }

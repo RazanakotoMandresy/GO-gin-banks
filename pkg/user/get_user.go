@@ -11,7 +11,7 @@ import (
 
 func (h handler) getUser(ctx *gin.Context) {
 	userParam := ctx.Param("user")
-	users, err := h.GetUserSingleUserFunc(userParam)
+	users, err := middleware.GetUserUUID(h.DB, userParam)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return

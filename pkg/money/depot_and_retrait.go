@@ -16,7 +16,7 @@ func (h handler) Depot(ctx *gin.Context) {
 		return
 	}
 	body := new(DepoRetraiReq)
-	userTosend, err := h.GetUserByuuid(usr)
+	userTosend, err := middleware.GetUserUUID(h.DB, usr)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -68,7 +68,7 @@ func (h handler) Retrait(ctx *gin.Context) {
 	}
 	body := new(DepoRetraiReq)
 
-	userTosend, err := h.GetUserByuuid(userTosendUUid)
+	userTosend, err := middleware.GetUserUUID(h.DB, userTosendUUid)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return

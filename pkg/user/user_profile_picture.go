@@ -19,7 +19,7 @@ func (h handler) UserPP(ctx *gin.Context) {
 		return
 	}
 	// ge anle uuid anle tokny hovaina
-	userUUidPP, err := h.GetUserSingleUserFunc(uuid)
+	userUUidPP, err := middleware.GetUserUUID(h.DB, uuid)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
