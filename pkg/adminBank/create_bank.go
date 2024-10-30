@@ -17,7 +17,7 @@ func (h handler) CreateBank(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	admin, err := h.GetAdminUUID(uuid)
+	admin, err := middleware.Admin.Admin(middleware.Admin{Db: h.DB, UuidToFind: uuid})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"err": err.Error(),

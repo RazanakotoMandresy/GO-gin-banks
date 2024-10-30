@@ -14,7 +14,7 @@ func (h handler) getConnectedUser(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": err.Error()})
 		return
 	}
-	user, err := h.GetUserSingleUserFunc(uuid)
+	user, err := middleware.User.User(middleware.User{UuidToFind: uuid, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 		return

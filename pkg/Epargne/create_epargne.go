@@ -28,7 +28,8 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": err.Error()})
 		return
 	}
-	user, err := h.GetUserSingleUserFunc(userConnectedUUID)
+	// user, err := h.GetUserSingleUserFunc(userConnectedUUID)
+	user, err := middleware.User.User(middleware.User{UuidToFind: userConnectedUUID, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 	}
@@ -57,7 +58,7 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		Value:        body.Value,
 		DayPerMounth: body.Date,
 		Type:         body.Type,
-		UserUUID:     user.UUID,
+		OwnerUUID:    user.UUID,
 	}
 	h.DB.Create(&epargne)
 	ctx.JSON(http.StatusOK, gin.H{"epargne": &epargne, "user": &user})
