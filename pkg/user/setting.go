@@ -24,7 +24,7 @@ func (h handler) SettingUser(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": err.Error()})
 		return
 	}
-	user, err := middleware.GetUserUUID(h.DB, uuid)
+	user, err := middleware.User.User(middleware.User{UuidToFind: uuid, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 		return
@@ -79,11 +79,11 @@ func deleMyAccount(h handler, user *models.User) error {
 // TODO handle la logique dans money satria mbola manip anle liste ao anaty db fotsiny aloha
 func blockAccount(h handler, uuid, userBlockUUID string) error {
 	// atao appUserName fa tsy uuid ny blockage
-	userToBlock, err := middleware.GetUserUUID(h.DB, userBlockUUID)
+	userToBlock, err := middleware.User.User(middleware.User{UuidToFind: userBlockUUID, Db: h.DB})
 	if err != nil {
 		return err
 	}
-	user, err := middleware.GetUserUUID(h.DB, uuid)
+	user, err := middleware.User.User(middleware.User{UuidToFind: uuid, Db: h.DB})
 	if err != nil {
 		return err
 	}
@@ -108,7 +108,7 @@ func blockAccount(h handler, uuid, userBlockUUID string) error {
 
 // pour un code plus safe de uuid string no naverina nalefa fa tsy tong de le user minyts
 func unBlockAccount(h handler, user models.User, userUnblock string) error {
-	userToUnblock, err := middleware.GetUserUUID(h.DB, userUnblock)
+	userToUnblock, err := middleware.User.User(middleware.User{UuidToFind: userUnblock, Db: h.DB})
 	// l'iuser ou l'on veut bloquer
 	if err != nil {
 		return err

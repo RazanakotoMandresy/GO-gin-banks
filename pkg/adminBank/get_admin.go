@@ -13,7 +13,7 @@ func (h handler) GetAdminInfo(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": err.Error()})
 		return
 	}
-	admin, err := h.GetAdminUUID(uuid)
+	admin, err := middleware.Admin.Admin(middleware.Admin{Db: h.DB, UuidToFind: uuid})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 		return

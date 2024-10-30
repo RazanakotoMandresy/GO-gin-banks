@@ -29,7 +29,7 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		return
 	}
 	// user, err := h.GetUserSingleUserFunc(userConnectedUUID)
-	user , err:= middleware.GetUserUUID(h.DB, userConnectedUUID) 
+	user, err := middleware.User.User(middleware.User{UuidToFind: userConnectedUUID, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 	}

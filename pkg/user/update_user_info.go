@@ -23,7 +23,7 @@ func (h handler) UpdateInfo(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})
 		return
 	}
-	user, err := middleware.GetUserUUID(h.DB, uuid)
+	user, err := middleware.User.User(middleware.User{UuidToFind: uuid, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err})
 		return

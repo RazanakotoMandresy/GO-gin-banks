@@ -29,7 +29,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "value cannot be nul"})
 		return
 	}
-	userConnected, err := middleware.GetUserUUID(h.DB, uuidConnectedStr)
+	userConnected, err := middleware.User.User(middleware.User{UuidToFind: uuidConnectedStr, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
@@ -39,7 +39,7 @@ func (h handler) SendMoney(ctx *gin.Context) {
 		return
 	}
 	// ctx params userTo send money UUID
-	userRecepteur, err := middleware.GetUserUUID(h.DB, ctx.Param("uuid"))
+	userRecepteur, err :=middleware.User.User(middleware.User{UuidToFind: ctx.Param("uuid"), Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
