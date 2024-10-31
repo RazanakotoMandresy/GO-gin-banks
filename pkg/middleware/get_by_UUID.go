@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	userModel  models.User
+	userModel  *models.User
 	Db         *gorm.DB
 	UuidToFind string
 }
@@ -17,9 +17,9 @@ func (u User) User() (*models.User, error) {
 	uuidToFind := u.UuidToFind
 	res := u.Db.Where("uuid = ? OR app_user_name = ?", uuidToFind, uuidToFind).First(&u.userModel)
 	if res.Error != nil {
-		return nil, fmt.Errorf(" %v not found ", uuidToFind)
+		return nil, fmt.Errorf("user with uuid or appName %v not found ", uuidToFind)
 	}
-	return &u.userModel, nil
+	return u.userModel, nil
 }
 
 type Admin struct {
