@@ -11,16 +11,19 @@ import (
 )
 
 type CreateEpargneRequest struct {
-	Name  string `json:"name"`
-	Value int32  `json:"value_epargne"`
-	Date  uint   `json:"day_epargned"`
-	Type  string `json:"type"`
+	Name      string `json:"name"`
+	Type      string `json:"type"`
+	Value     int32  `json:"value_epargne"`
+	Date      uint   `json:"day_epargned"`
+	Message   string `json:"message"`
+	Sent_to   string `json:"sent_to"`
+	OwnerUUID string `json:"owner_uuid"`
 }
 
-func (h handler) CreateEpargne(ctx *gin.Context) {
+func (h Handler) CreateEpargne(ctx *gin.Context) {
 	body := new(CreateEpargneRequest)
 	if err := ctx.Bind(&body); err != nil {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err})
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
 	userConnectedUUID, err := middleware.ExtractTokenUUID(ctx)
@@ -28,21 +31,20 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"err": err.Error()})
 		return
 	}
-	// user, err := h.GetUserSingleUserFunc(userConnectedUUID)
 	user, err := middleware.User.User(middleware.User{UuidToFind: userConnectedUUID, Db: h.DB})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		return
 	}
 	// logic stuff
 	if body.Value > user.Moneys {
-		err := fmt.Sprintf("vous ne pouvez pas epargner %v car l'argent sur votre compte est %v", body.Value, user.Moneys)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"err": err,
+			"err": fmt.Sprintf("vous ne pouvez pas epargner %v car l'argent sur votre compte est %v", body.Value, user.Moneys),
 		})
 		return
 	}
-	if body.Date == 0 || body.Value == 0 {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "date and value are required"})
+	if body.Value == 0 {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": "value are required"})
 		return
 	}
 	requiredEpargne := map[string]string{
@@ -52,6 +54,11 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 	if !middleware.ValidateRequiredFields(ctx, requiredEpargne) {
 		return
 	}
+	if body.Type == "economie" {
+		// handle logics economie if not economie default
+		fmt.Println("economie")
+		body.Sent_to = userConnectedUUID
+	}
 	epargne := models.Epargne{
 		ID:           uuid.New(),
 		Name:         body.Name,
@@ -59,7 +66,11 @@ func (h handler) CreateEpargne(ctx *gin.Context) {
 		DayPerMounth: body.Date,
 		Type:         body.Type,
 		OwnerUUID:    user.UUID,
+		Message:      body.Message,
 	}
-	h.DB.Create(&epargne)
-	ctx.JSON(http.StatusOK, gin.H{"epargne": &epargne, "user": &user})
+	if res := h.DB.Create(&epargne); res.Error != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": res.Error.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"epargne": &epargne})
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/user"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -31,11 +32,12 @@ func main() {
 	epargne.EpargneTransaction(router, dbHandler)
 	// websocket ny chatrealtimes
 	chatrealtimes.ChatTransaction(router, dbHandler)
-		// dir misy amzao
+	// dir misy amzao
 	rootDir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
 	}
+	cronForEp()
 	// serve depuis ou prendre les images et donne l'url
 	router.Static("./upload", rootDir+"/upload")
 	router.Static("./imgDef", rootDir+"/imgDef")
@@ -43,4 +45,11 @@ func main() {
 		log.Fatal("an error occured during running the router", err)
 	}
 
+}
+func cronForEp() {
+	newCron := cron.New()
+	newCron.AddFunc("@daily", func() {
+		epargne.Handler.AutoEpargne("")
+	})
+	newCron.Run()
 }
