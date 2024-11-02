@@ -49,7 +49,7 @@ func main() {
 func cronForEp() {
 	newCron := cron.New()
 	newCron.AddFunc("@daily", func() {
-		epargne.Handler.AutoEpargne("")
+		epargne.Handler.AutoEpargne(epargne.Handler{})
 	})
 	newCron.Run()
 }
