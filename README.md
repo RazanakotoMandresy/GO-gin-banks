@@ -118,3 +118,4 @@ http://localhost:<your port>/api/v1/user/
   "unblockAcc":"user you want to unblock"
 }
 ```
+# notes this app isn't finished yet still many things to make better 
