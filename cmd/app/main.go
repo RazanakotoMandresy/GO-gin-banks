@@ -17,15 +17,21 @@ import (
 )
 
 func main() {
-	router := gin.Default()
-	gin.SetMode(gin.DebugMode)
-	router.Use(CORSMiddleware())
-	//
+	// cron for epargne
 	godotenv.Load(".env")
 	port := os.Getenv("PORT")
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)
-	//
+	newCron := cron.New()
+	newCron.AddFunc("@every 1s", func() {
+		fmt.Println("transaction executed")
+		epargne.AutoEpargne(epargne.Handler{DB: dbHandler})
+	})
+	newCron.Start()
+	defer newCron.Stop()
+	router := gin.Default()
+	gin.SetMode(gin.DebugMode)
+	router.Use(CORSMiddleware())
 	user.RegisterRoutes(router, dbHandler)
 	money.TransactionRoutes(router, dbHandler)
 	adminbank.AdminRoutes(router, dbHandler)
@@ -37,7 +43,6 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	cronForEp()
 	// serve depuis ou prendre les images et donne l'url
 	router.Static("./upload", rootDir+"/upload")
 	router.Static("./imgDef", rootDir+"/imgDef")
@@ -47,9 +52,5 @@ func main() {
 
 }
 func cronForEp() {
-	newCron := cron.New()
-	newCron.AddFunc("@daily", func() {
-		epargne.Handler.AutoEpargne(epargne.Handler{})
-	})
-	newCron.Run()
+
 }
