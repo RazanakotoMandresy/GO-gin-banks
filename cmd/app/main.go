@@ -23,7 +23,7 @@ func main() {
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)
 	newCron := cron.New()
-	newCron.AddFunc("@every 1s", func() {
+	newCron.AddFunc("@daily", func() {
 		fmt.Println("transaction executed")
 		epargne.AutoEpargne(epargne.Handler{DB: dbHandler})
 	})

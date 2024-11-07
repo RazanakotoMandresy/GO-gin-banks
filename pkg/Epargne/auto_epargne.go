@@ -11,7 +11,7 @@ import (
 
 func  AutoEpargne(h Handler) {
 	var epargnes []models.Epargne
-	fmt.Println("cronjob executed ", time.Now())
+	fmt.Println("cronjob executed ", time.Now().Format(time.DateTime))
 	getEpargne := h.DB.Find(&epargnes)
 	if getEpargne.Error != nil {
 		fmt.Printf("err on get all epargnes: %v", getEpargne.Error)
