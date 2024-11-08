@@ -24,8 +24,9 @@ func main() {
 	dbHandler := db.Init(dbUrl)
 	newCron := cron.New()
 	newCron.AddFunc("@daily", func() {
-		fmt.Println("transaction executed")
-		epargne.AutoEpargne(epargne.Handler{DB: dbHandler})
+		if err := epargne.AutoEpargne(epargne.Handler{DB: dbHandler}); err != nil {
+			fmt.Println("error on auto epargne ... :", err)
+		}
 	})
 	newCron.Start()
 	defer newCron.Stop()
