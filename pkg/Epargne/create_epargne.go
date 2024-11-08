@@ -11,11 +11,12 @@ import (
 )
 
 type CreateEpargneRequest struct {
-	Name      string `json:"name"`
-	Type      string `json:"type"`
-	Value     int32  `json:"value_epargne"`
-	Date      uint   `json:"day_epargned"`
-	Message   string `json:"message"`
+	Name    string `json:"name"`
+	Type    string `json:"type"`
+	Value   int32  `json:"value_epargne"`
+	Date    uint   `json:"day_epargned"`
+	Message string `json:"message"`
+	// suppused to be the appUserName of the user sent to and then return it's uuid
 	Sent_to   string `json:"sent_to"`
 	OwnerUUID string `json:"owner_uuid"`
 }
@@ -54,10 +55,13 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 	if !middleware.ValidateRequiredFields(ctx, requiredEpargne) {
 		return
 	}
-	if body.Type == "economie" {
+	if body.Type == "economie" || body.Type == "economies" {
 		// handle logics economie if not economie default
-		fmt.Println("economie")
 		body.Sent_to = userConnectedUUID
+	}
+	userToSend, err := middleware.User.User(middleware.User{UuidToFind: body.Sent_to})
+	if err != nil {
+		return
 	}
 	epargne := models.Epargne{
 		ID:           uuid.New(),
@@ -67,6 +71,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		Type:         body.Type,
 		OwnerUUID:    user.UUID,
 		Message:      body.Message,
+		Sent_to:      userToSend.UUID,
 	}
 	if res := h.DB.Create(&epargne); res.Error != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": res.Error.Error()})
