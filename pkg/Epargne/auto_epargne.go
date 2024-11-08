@@ -12,6 +12,7 @@ import (
 
 func AutoEpargne(h Handler) error {
 	var epargnes []models.Epargne
+	// var userSentTo models.User
 	fmt.Println("cronjob executed", time.Now().Format(time.DateTime))
 	// get all epargne from the db
 	if getEpargne := h.DB.Find(&epargnes); getEpargne.Error != nil {
@@ -30,11 +31,18 @@ func AutoEpargne(h Handler) error {
 			if createRes := h.DB.Create(&models.EpargneResume{
 				ID:            uuid.New(),
 				Type:          epargne.Type,
-				ResumeMessage: fmt.Sprintf("epargne just got created : value %v , day %v , sent_to %s , owner %s", epargne.Value, epargne.DayPerMounth, epargne.Sent_to, epargne.OwnerUUID),
+				ResumeMessage: fmt.Sprintf("value %v , day %v , sent_to %s , owner %s", epargne.Value, epargne.DayPerMounth, epargne.Sent_to, epargne.OwnerUUID),
 				Created_at:    time.Now(),
+				Value:         uint(epargne.Value),
 			}); createRes.Error != nil {
 				return errors.New("Error occuring creating the epargne resume " + createRes.Error.Error())
 			}
+			userToSend, err := middleware.User.User(middleware.User{UuidToFind: epargne.Sent_to})
+			if err != nil {
+				return err
+			}
+			userToSend.Moneys = user.Moneys + epargne.Value
+			h.DB.Save(&userToSend)
 		}
 	}
 	return nil
