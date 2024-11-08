@@ -59,7 +59,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		// handle logics economie if not economie default
 		body.Sent_to = userConnectedUUID
 	}
-	userToSend, err := middleware.User.User(middleware.User{UuidToFind: body.Sent_to})
+	userToSend, err := middleware.User.User(middleware.User{UuidToFind: body.Sent_to, Db: h.DB})
 	if err != nil {
 		return
 	}
