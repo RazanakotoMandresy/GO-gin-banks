@@ -52,6 +52,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		"name":    body.Name,
 		"type":    body.Type,
 		"message": body.Message,
+		"sent_to": body.Sent_to,
 	}
 	if !middleware.ValidateRequiredFields(ctx, requiredEpargne) {
 		return
@@ -62,6 +63,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 	}
 	userToSend, err := middleware.User.User(middleware.User{UuidToFind: body.Sent_to, Db: h.DB})
 	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"err": err.Error()})
 		return
 	}
 	epargne := models.Epargne{
