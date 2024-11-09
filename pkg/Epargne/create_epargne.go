@@ -15,10 +15,11 @@ type CreateEpargneRequest struct {
 	Type    string `json:"type"`
 	Message string `json:"message"`
 	// suppused to be the appUserName of the user sent to and then return it's uuid
-	Sent_to  string `json:"sent_to"`
-	Value    int32  `json:"value_epargne"`
-	Date     uint   `json:"day_epargned"`
-	AutoSend bool   `json:"auto_send"`
+	Sent_to    string `json:"sent_to"`
+	Value      int32  `json:"value_epargne"`
+	Date       uint   `json:"day_epargned"`
+	AutoSend   bool   `json:"auto_send"`
+	IsEconomie bool   `json:"is_economie"`
 }
 
 func (h Handler) CreateEpargne(ctx *gin.Context) {
@@ -57,9 +58,11 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 	if !middleware.ValidateRequiredFields(ctx, requiredEpargne) {
 		return
 	}
-	if body.Type == "economie" || body.Type == "economies" {
+	if body.IsEconomie {
 		// handle logics economie if not economie default
 		body.Sent_to = userConnectedUUID
+		// economie always manuel get
+		body.AutoSend = false
 	}
 	userToSend, err := middleware.User.User(middleware.User{UuidToFind: body.Sent_to, Db: h.DB})
 	if err != nil {
