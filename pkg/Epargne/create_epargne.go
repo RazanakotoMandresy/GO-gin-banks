@@ -13,12 +13,12 @@ import (
 type CreateEpargneRequest struct {
 	Name    string `json:"name"`
 	Type    string `json:"type"`
-	Value   int32  `json:"value_epargne"`
-	Date    uint   `json:"day_epargned"`
 	Message string `json:"message"`
 	// suppused to be the appUserName of the user sent to and then return it's uuid
-	Sent_to   string `json:"sent_to"`
-	OwnerUUID string `json:"owner_uuid"`
+	Sent_to  string `json:"sent_to"`
+	Value    int32  `json:"value_epargne"`
+	Date     uint   `json:"day_epargned"`
+	AutoSend bool   `json:"auto_send"`
 }
 
 func (h Handler) CreateEpargne(ctx *gin.Context) {
@@ -49,8 +49,9 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		return
 	}
 	requiredEpargne := map[string]string{
-		"name": body.Name,
-		"type": body.Type,
+		"name":    body.Name,
+		"type":    body.Type,
+		"message": body.Message,
 	}
 	if !middleware.ValidateRequiredFields(ctx, requiredEpargne) {
 		return
@@ -72,6 +73,8 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		OwnerUUID:    user.UUID,
 		Message:      body.Message,
 		Sent_to:      userToSend.UUID,
+		// false non autosend
+		AutoSend: body.AutoSend,
 	}
 	if res := h.DB.Create(&epargne); res.Error != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": res.Error.Error()})

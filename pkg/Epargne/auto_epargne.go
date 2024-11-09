@@ -23,7 +23,8 @@ func AutoEpargne(h Handler) error {
 		if err != nil {
 			return err
 		}
-		if time.Now().Day() == int(epargne.DayPerMounth) {
+		// check day today and if the epargne is autosend mbola todo ny index ny logic false autosend
+		if time.Now().Day() == int(epargne.DayPerMounth) && epargne.AutoSend {
 			if epargne.Type == "economies" || epargne.Type == "economie" {
 				// handle logic economies ,dayPer month just day for the money to be soustract in the current user
 				// the money will be send to himself but only if he click on the user on get my epargne and get the epargne with the specific uuid
