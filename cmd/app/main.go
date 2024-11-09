@@ -23,7 +23,7 @@ func main() {
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)
 	newCron := cron.New()
-	newCron.AddFunc("@every 1s", func() {
+	newCron.AddFunc("@daily", func() {
 		if err := epargne.AutoEpargne(epargne.Handler{DB: dbHandler}); err != nil {
 			fmt.Println("error on auto epargne ... :", err)
 		}
@@ -50,8 +50,5 @@ func main() {
 	if err := router.Run(port); err != nil {
 		log.Fatal("an error occured during running the router", err)
 	}
-
-}
-func cronForEp() {
 
 }
