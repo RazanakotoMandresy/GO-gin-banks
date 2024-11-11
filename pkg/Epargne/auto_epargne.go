@@ -13,8 +13,6 @@ import (
 
 func AutoEpargne(h Handler) error {
 	var epargnes []models.Epargne
-	// var userSentTo models.User
-	fmt.Println("cronjob executed", time.Now().Format(time.DateTime))
 	// get all epargne from the db
 	if getEpargne := h.DB.Find(&epargnes); getEpargne.Error != nil {
 		return fmt.Errorf("err on get all epargnes: %v", getEpargne.Error)
@@ -26,7 +24,7 @@ func AutoEpargne(h Handler) error {
 			return err
 		}
 		// check day today and if the epargne is autosend mbola todo ny index ny logic false autosend
-		if time.Now().Day() == int(epargne.DayPerMounth) && epargne.AutoSend && epargne.Type != "economies" && epargne.Type != "economie" {
+		if time.Now().Day() == int(epargne.DayPerMounth) && epargne.AutoSend && !epargne.IsEconomie {
 			// handle logic economies ,dayPer month just day for the money to be soustract in the current user
 			// the money will be send to himself but only if he click on the user on get my epargne and get the epargne with the specific uuid
 			if err := autoEpargneCaseNoEconomie(user, &epargne, &h); err != nil {
@@ -39,6 +37,7 @@ func AutoEpargne(h Handler) error {
 	return nil
 }
 func autoEpargneCaseNoEconomie(user *models.User, epargne *models.Epargne, h *Handler) error {
+	fmt.Println("auto_epargne executed")
 	user.Moneys = (user.Moneys - epargne.Value)
 	if res := h.DB.Save(&user); res.Error != nil {
 		return errors.New("Error when updating user money" + res.Error.Error())
