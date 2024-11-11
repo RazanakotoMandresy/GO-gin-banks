@@ -17,5 +17,6 @@ func EpargneTransaction(router *gin.Engine, db *gorm.DB) {
 	routes := router.Group("/api/v1/epargne")
 	routes.POST("/createEpargne", middleware.RequireAuth, h.CreateEpargne)
 	// getMyEpargne is only for non AutoSend and economies
-	routes.PATCH("/", middleware.RequireAuth, h.GetMyEpargne)
+	routes.PATCH("/", middleware.RequireAuth, h.GetMoneyEpargne)
+	routes.GET("/", middleware.RequireAuth, h.GetAllMyEpargnes)
 }
