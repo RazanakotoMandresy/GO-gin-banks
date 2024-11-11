@@ -17,7 +17,6 @@ type Epargne struct {
 	Value        int32
 	AutoSend     bool
 	IsEconomie   bool
-	Updated_at   time.Time
 	Deleted_at   time.Time
 	Created_at   time.Time
 }

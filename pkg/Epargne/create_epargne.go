@@ -3,6 +3,7 @@ package epargne
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
@@ -81,6 +82,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		// false non autosend
 		AutoSend:   body.AutoSend,
 		IsEconomie: body.IsEconomie,
+		Created_at: time.Now(),
 	}
 	if res := h.DB.Create(&epargne); res.Error != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": res.Error.Error()})
