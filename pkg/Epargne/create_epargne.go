@@ -79,7 +79,8 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		Message:      body.Message,
 		Sent_to:      userToSend.UUID,
 		// false non autosend
-		AutoSend: body.AutoSend,
+		AutoSend:   body.AutoSend,
+		IsEconomie: body.IsEconomie,
 	}
 	if res := h.DB.Create(&epargne); res.Error != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": res.Error.Error()})
