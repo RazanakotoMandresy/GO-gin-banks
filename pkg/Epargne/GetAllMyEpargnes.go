@@ -8,17 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type getEpargnes struct {
+	userUUID string
+	h        Handler
+}
+
 func (h Handler) GetAllMyEpargnes(ctx *gin.Context) {
 	userConnected, err := middleware.ExtractTokenUUID(ctx)
 	if err != nil {
 		return
 	}
-	myEpargnesEconomies, err := getAllMyEpargnesFuncEconomies(userConnected, h)
+	getEpargnes := getEpargnes{userUUID: userConnected, h: h}
+	myEpargnesEconomies, err := getEpargnes.getAllMyEpargnesFuncEconomies()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": err})
 		return
 	}
-	myEpargnesNonEconomie, err := getAllMyEpargnesFuncNotEconomie(userConnected, h)
+	myEpargnesNonEconomie, err := getEpargnes.getAllMyEpargnesFuncNotEconomie()
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": err})
 		return
@@ -26,17 +32,17 @@ func (h Handler) GetAllMyEpargnes(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"epargnes_economies": myEpargnesEconomies, "simples_epargnes": myEpargnesNonEconomie})
 }
 
-func getAllMyEpargnesFuncEconomies(userUUID string, h Handler) ([]models.Epargne, error) {
+func (g getEpargnes) getAllMyEpargnesFuncEconomies() ([]models.Epargne, error) {
 	var epargnes []models.Epargne
-	res := h.DB.Where("owner_uuid = ? AND is_economie = true", userUUID).Find(&epargnes)
+	res := g.h.DB.Where("owner_uuid = ? AND is_economie = true", g.userUUID).Find(&epargnes)
 	if res.Error != nil {
 		return nil, res.Error
 	}
 	return epargnes, nil
 }
-func getAllMyEpargnesFuncNotEconomie(userUUID string, h Handler) ([]models.Epargne, error) {
+func (g getEpargnes) getAllMyEpargnesFuncNotEconomie() ([]models.Epargne, error) {
 	var epargnes []models.Epargne
-	res := h.DB.Where("owner_uuid = ? AND is_economie = false", userUUID).Find(&epargnes)
+	res := g.h.DB.Where("owner_uuid = ? AND is_economie = false", g.userUUID).Find(&epargnes)
 	if res.Error != nil {
 		return nil, res.Error
 	}
