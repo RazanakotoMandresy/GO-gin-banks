@@ -4,28 +4,29 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type Epargne struct {
-	ID           uuid.UUID `gorm:"id;primaryKey"`
-	Name         string
-	Type         string
-	OwnerUUID    string
-	Message      string
-	Sent_to      string
-	DayPerMounth uint
-	Value        int32
-	AutoSend     bool
-	IsEconomie   bool
-	Deleted_at   time.Time
-	Created_at   time.Time
+	ID           uuid.UUID      `gorm:"id;primaryKey" json:"id"`
+	Name         string         `json:"name"`
+	Type         string         `json:"type"`
+	OwnerUUID    string         `json:"owner_uuid"`
+	Message      string         `json:"message"`
+	Sent_to      string         `json:"sent_to"`
+	DayPerMounth uint           `json:"day_per_month"`
+	Value        int32          `json:"value"`
+	AutoSend     bool           `json:"auto_send"`
+	IsEconomie   bool           `json:"is_economie"`
+	Deleted_at   gorm.DeletedAt `json:"deleted_at"`
+	Created_at   time.Time      `json:"created_at"`
 }
 type EpargneResume struct {
-	ID            uuid.UUID `gorm:"id;primaryKey"`
-	Type          string
-	OwnerUUID     string
-	ResumeMessage string
-	Value         uint
-	Created_at    time.Time
-	Deleted_at    time.Time
+	ID            uuid.UUID      `gorm:"id;primaryKey"`
+	Type          string         `json:"type"`
+	OwnerUUID     string         `json:"owner_uuid"`
+	ResumeMessage string         `json:"resume_message"`
+	Value         uint           `json:"value"`
+	Created_at    time.Time      `json:"created_at"`
+	Deleted_at    gorm.DeletedAt `json:"deleted_at"`
 }
