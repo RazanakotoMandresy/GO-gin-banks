@@ -19,4 +19,6 @@ func EpargneTransaction(router *gin.Engine, db *gorm.DB) {
 	// getMyEpargne is only for non AutoSend and economies
 	routes.PATCH("/", middleware.RequireAuth, h.GetMoneyEpargne)
 	routes.GET("/", middleware.RequireAuth, h.GetAllMyEpargnes)
+	routes.GET("/:epargneUUID", middleware.RequireAuth, h.GetMoneyEpargne)
+	routes.DELETE("/:epargneUUID", middleware.RequireAuth, h.DeleteEpargne)
 }
