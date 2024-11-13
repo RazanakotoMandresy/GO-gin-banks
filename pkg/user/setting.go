@@ -76,7 +76,6 @@ func deleMyAccount(h handler, user *models.User) error {
 	return nil
 }
 
-// TODO handle la logique dans money satria mbola manip anle liste ao anaty db fotsiny aloha
 func blockAccount(h handler, uuid, userBlockUUID string) error {
 	// atao appUserName fa tsy uuid ny blockage
 	userToBlock, err := middleware.User.User(middleware.User{UuidToFind: userBlockUUID, Db: h.DB})
@@ -113,7 +112,6 @@ func unBlockAccount(h handler, user models.User, userUnblock string) error {
 	if err != nil {
 		return err
 	}
-	// TODO Algo temporaire vu que le code est nul enleve dans l'array les noms dejas dedans
 	blockedUser := []string{}
 	for _, appUserName := range user.BlockedAcc {
 		if appUserName == userToUnblock.AppUserName {
