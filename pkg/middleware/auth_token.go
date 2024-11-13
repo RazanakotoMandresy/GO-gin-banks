@@ -40,6 +40,7 @@ func RequireAuth(c *gin.Context) {
 	}
 	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, "Erreur token invalide")
 			return nil, errors.New("unexpected signing method")
 		}
 		return []byte(os.Getenv("SECRET")), nil

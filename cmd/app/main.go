@@ -23,7 +23,7 @@ func main() {
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)
 	newCron := cron.New()
-	newCron.AddFunc("@daily", func() {
+	newCron.AddFunc("@every 5s", func() {
 		if err := epargne.AutoEpargne(epargne.Handler{DB: dbHandler}); err != nil {
 			fmt.Println("error on auto epargne ... :", err)
 		}
