@@ -1,4 +1,3 @@
-
 <h1 align="center"> go gin banks is an rest api banking written in go with gin </h1>
 <h3 align="center"> requirement for the app </h3>
 first you need to have go installed on your device to check that type
@@ -71,13 +70,13 @@ http://localhost:<your port>/api/v1/user/login
 http://localhost:<your port>/api/v1/user/
 ```
 
-- Get single user 
+- Get single user
 
 ```bash
 http://localhost:<your port>/api/v1/user/
 ```
 
-- Get connected user 
+- Get connected user
 
 ```bash
 http://localhost:<your port>/api/v1/user/logedUser
@@ -88,6 +87,7 @@ http://localhost:<your port>/api/v1/user/logedUser
 ```bash
 http://localhost:<your port>/api/v1/user/pp
 ```
+
 you need an multipart-form data as your content-type then "filePP" is the name given for the file.
 
 - Update user info : method patch
@@ -95,15 +95,17 @@ you need an multipart-form data as your content-type then "filePP" is the name g
 ```bash
 http://localhost:<your port>/api/v1/user/
 ```
+
 <br> the avalaible body update yall is type of string<br>
 
 ```json
 {
-  "AppUserName":"your new app user name",
-  "residance":"your new app residance"
+  "AppUserName": "your new app user name",
+  "residance": "your new app residance"
 }
 ```
-- Update user : method patch 
+
+- Update user : method patch
 
 ```bash
 http://localhost:<your port>/api/v1/user/
@@ -120,3 +122,155 @@ http://localhost:<your port>/api/v1/user/
 }
 ```
 
+<h4> for the admin </h4>
+- Register as an admin method post
+
+```bash
+http://localhost:<your port>/api/v1/admin/register
+```
+
+```json
+{
+  "name": "yourUniqueAdminName",
+  "passwords": "yourPasswords",
+  "RootPass": "mandresy"
+}
+```
+
+<h5 style="color: red">notice:  the actual root pass is static with the value of "mandresy" but some future update will be make it configurable </h5>
+
+- Login as an admin method post
+
+```bash
+http://localhost:<your port>/api/v1/admin/login
+```
+
+```json
+{
+  "name": "yourUniqueAdminName",
+  "passwords": "yourPasswords"
+}
+```
+
+- Creating a bank
+
+##### notes a bank is just a place for doing some retrait and depot
+
+```bash
+http://localhost:<your port>/api/v1/admin/createBank
+```
+
+```json
+{
+  "place": "place of the bank ou want",
+  "passwords": "yourPasswords",
+  "money": "the money you want to allocate to this bank"
+}
+```
+
+##### these methodes above needs an admin token
+
+```bash
+http://localhost:<your port>/api/v1/admin/getBank
+```
+
+- Get admin info
+
+```bash
+http://localhost:<your port>/api/v1/admin/getAdminInfo
+```
+
+### for transactions (money)
+
+##### notes retrait needs an place that should be valid but in our test case money is virtual and place too
+
+- Depot methods put
+
+```bash
+http://localhost:<your port>/api/v1/transaction/depot
+```
+
+```json
+{
+  "value": value of the money you want to depose,
+  "place":"place where you do an depot",
+  "password":"your password"
+}
+```
+
+- retrait money methods put
+
+```bash
+http://localhost:<your port>/api/v1/transaction/retrait
+```
+
+- send money methods post
+
+```bash
+# uuid user uuid
+http://localhost:<your port>/api/v1/transaction/:uuid
+```
+
+```json
+{
+  "value": value of the money you want to send,
+  "password":"your passwords"
+}
+```
+
+- get all historics
+
+```bash
+http://localhost:<your port>/api/v1/transaction/hitstoric
+```
+
+- get single historic
+
+```bash
+# uuid is transctions uuid
+http://localhost:<your port>/api/v1/transaction/:uuid
+```
+
+#### epargne functionnality
+
+##### notes all epargnes functionnality needs an authentification
+
+- create epargne methodes post
+
+```json
+{
+  "name": "names",
+  "type": "type",
+  "message": "all your messages",
+  // sent_to need to be empty if your epargne is an economie
+  "sent_to": "sent to uuid",
+  "value": "amount of money you want to epargnes need to be inferior to the userConnected's money ",
+  "date": "day of the epargne bettween 1 -> 31",
+  "auto_send": "boolean if you want to auto_send it ",
+  "is_economie": "boolean if the epargne is an economie"
+}
+```
+
+```bash
+http://localhost:<your port>/api/v1/epargne/createEpargne
+```
+
+- get all my epargnes
+
+```bash
+http://localhost:<your port>/api/v1/epargne/
+```
+
+- get single epargne
+
+```bash
+http://localhost:<your port>/api/v1/epargne/:epargneUUID
+```
+
+- delete an epargnes
+
+##### notes : if an epargnes is deleted it won't be auto epargned anymore
+
+```bash
+http://localhost:<your port>/api/v1/epargne/:epargneUUID
+```
