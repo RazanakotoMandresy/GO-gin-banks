@@ -2,7 +2,7 @@ package user
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -31,14 +31,16 @@ func (h handler) UserPP(ctx *gin.Context) {
 	}
 	splitedName := strings.Split(file.Filename, ".")
 	// rename le nom pour qu'il soit unique
-	fileName := filepath.Base(splitedName[0] + fmt.Sprint(rand.Uint64()) + "." + splitedName[1])
+	fileName := filepath.Base(splitedName[0] + fmt.Sprint(rand.Uint32()) + "." + splitedName[1])
 	// destinantion
 	destFile := fmt.Sprintf("upload/%v", fileName)
 	if err := ctx.SaveUploadedFile(file, destFile); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	os.Remove(userUUidPP.Image)
+	if err := os.Remove(userUUidPP.Image); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+	}
 	userUUidPP.Image = destFile
 	h.DB.Save(userUUidPP)
 	ctx.JSON(http.StatusCreated, gin.H{"user": userUUidPP})

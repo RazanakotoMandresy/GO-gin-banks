@@ -16,8 +16,8 @@ type BankAdminReq struct {
 }
 type BankReq struct {
 	Money    int32  `json:"money"`
-	Lieux    string `json:"lieux"`
-	Password string `json:"password"`
+	Lieux    string `json:"place"`
+	Password string `json:"passwords"`
 }
 type BankLogRequest struct {
 	Name      string `json:"name"`

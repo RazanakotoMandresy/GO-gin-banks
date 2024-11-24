@@ -91,7 +91,9 @@ func blockAccount(h handler, uuid, userBlockUUID string) error {
 	// une deuxieme appuye sur le block va causer un unblock
 	if found {
 		// appeles de unblock
-		unBlockAccount(h, *user, userBlockUUID)
+		if err := unBlockAccount(h, *user, userBlockUUID); err != nil {
+			return err
+		}
 		return nil
 	}
 	if user.AppUserName == userToBlock.AppUserName {

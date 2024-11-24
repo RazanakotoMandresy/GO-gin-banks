@@ -18,7 +18,10 @@ import (
 
 func main() {
 	// cron for epargne
-	godotenv.Load(".env")
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal(err)
+	}
 	port := os.Getenv("PORT")
 	dbUrl := os.Getenv("DB_URL")
 	dbHandler := db.Init(dbUrl)

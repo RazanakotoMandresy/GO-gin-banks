@@ -15,7 +15,7 @@ type CreateEpargneRequest struct {
 	Name    string `json:"name"`
 	Type    string `json:"type"`
 	Message string `json:"message"`
-	// suppused to be the appUserName of the user sent to and then return it's uuid
+	// supposed to be the appUserName of the user sent to and then return it's uuid
 	Sent_to    string `json:"sent_to"`
 	Value      int32  `json:"value_epargne"`
 	Date       uint   `json:"day_epargned"`
@@ -74,7 +74,7 @@ func (h Handler) CreateEpargne(ctx *gin.Context) {
 		ID:           uuid.New(),
 		Name:         body.Name,
 		Value:        body.Value,
-		DayPerMounth: body.Date,
+		DayPerMounth: int(body.Date),
 		Type:         body.Type,
 		OwnerUUID:    user.UUID,
 		Message:      body.Message,

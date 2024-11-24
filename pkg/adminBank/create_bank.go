@@ -1,7 +1,7 @@
 package adminbank
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"

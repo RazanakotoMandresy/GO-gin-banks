@@ -14,7 +14,7 @@ type Epargne struct {
 	OwnerUUID    string         `json:"owner_uuid"`
 	Message      string         `json:"message"`
 	Sent_to      string         `json:"sent_to"`
-	DayPerMounth uint           `json:"day_per_month"`
+	DayPerMounth int           `json:"day_per_month"`
 	Value        int32          `json:"value"`
 	AutoSend     bool           `json:"auto_send"`
 	IsEconomie   bool           `json:"is_economie"`
@@ -26,7 +26,7 @@ type EpargneResume struct {
 	Type          string         `json:"type"`
 	OwnerUUID     string         `json:"owner_uuid"`
 	ResumeMessage string         `json:"resume_message"`
-	Value         uint           `json:"value"`
+	Value         int32           `json:"value"`
 	Created_at    time.Time      `json:"created_at"`
 	Deleted_at    gorm.DeletedAt `json:"deleted_at"`
 }

@@ -24,7 +24,7 @@ func AutoEpargne(h Handler) error {
 			return err
 		}
 		// check day today and if the epargne is autosend mbola todo ny index ny logic false autosend
-		if time.Now().Day() == int(epargne.DayPerMounth) && epargne.AutoSend && !epargne.IsEconomie {
+		if time.Now().Day() == epargne.DayPerMounth && epargne.AutoSend && !epargne.IsEconomie {
 			// handle logic economies ,dayPer month just day for the money to be soustract in the current user
 			// the money will be send to himself but only if he click on the user on get my epargne and get the epargne with the specific uuid
 			if err := autoEpargneCaseNoEconomie(user, &epargne, &h); err != nil {
@@ -47,7 +47,7 @@ func autoEpargneCaseNoEconomie(user *models.User, epargne *models.Epargne, h *Ha
 		Type:          epargne.Type,
 		ResumeMessage: fmt.Sprintf("value %v , day %v , sent_to %s , owner %s", epargne.Value, epargne.DayPerMounth, epargne.Sent_to, epargne.OwnerUUID),
 		Created_at:    time.Now(),
-		Value:         uint(epargne.Value),
+		Value:         epargne.Value,
 	}); createRes.Error != nil {
 		return errors.New("Error occuring creating the epargne resume " + createRes.Error.Error())
 	}
