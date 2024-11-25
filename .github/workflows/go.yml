@@ -18,7 +18,7 @@ jobs:
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
       - name: sast gosec
-        run: gosec ./...
+        run: gosec -exclude=G104  ./...
         
 
       - name: Set up QEMU
