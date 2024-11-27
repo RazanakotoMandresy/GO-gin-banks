@@ -8,7 +8,6 @@ COPY . .
 
 RUN go mod tidy && go mod vendor
 
-
 RUN go build -o  bin/backend .
 
 EXPOSE 3000

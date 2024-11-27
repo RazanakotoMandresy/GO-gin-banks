@@ -2,4 +2,3 @@ bin/*
 upload/*
 .vscode
 .env
-vendor
