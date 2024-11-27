@@ -17,7 +17,7 @@ type User struct {
 	Name        string         `json:"name"`
 	Email       string         `gorm:"unique"`
 	FirstName   string         `json:"firstName"`
-	Moneys      int32          `json:"money"`
+	Moneys      uint           `json:"money"`
 	Password    string         `json:"passwords"`
 	BirthDate   string         `json:"dateNaissance"`
 	Residance   string         `json:"residance"`

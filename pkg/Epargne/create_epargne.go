@@ -17,8 +17,8 @@ type CreateEpargneRequest struct {
 	Message string `json:"message"`
 	// suppused to be the appUserName of the user sent to and then return it's uuid
 	Sent_to    string `json:"sent_to"`
-	Value      int32  `json:"value_epargne"`
-	Date       uint   `json:"day_epargned"`
+	Value      uint   `json:"value_epargne"`
+	Date       int    `json:"day_epargned"`
 	AutoSend   bool   `json:"auto_send"`
 	IsEconomie bool   `json:"is_economie"`
 }

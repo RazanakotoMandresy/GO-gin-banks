@@ -2,11 +2,11 @@ package user
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
@@ -30,8 +30,8 @@ func (h handler) UserPP(ctx *gin.Context) {
 		return
 	}
 	splitedName := strings.Split(file.Filename, ".")
-	// rename le nom pour qu'il soit unique
-	fileName := filepath.Base(splitedName[0] + fmt.Sprint(rand.Uint64()) + "." + splitedName[1])
+ 	// rename le nom pour qu'il soit unique
+	fileName := filepath.Base(splitedName[0] + fmt.Sprint(time.Now().Nanosecond()) + "." + splitedName[1])
 	// destinantion
 	destFile := fmt.Sprintf("upload/%v", fileName)
 	if err := ctx.SaveUploadedFile(file, destFile); err != nil {

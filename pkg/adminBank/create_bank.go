@@ -1,23 +1,23 @@
 package adminbank
 
 import (
-	"math/rand"
 	"net/http"
 
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/common/models"
 	"github.com/RazanakotoMandresy/go-gin-banks/pkg/middleware"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (h handler) CreateBank(ctx *gin.Context) {
 	body := new(BankReq)
 	// mamadika anle uuidAny ho string
-	uuid, err := middleware.ExtractTokenUUID(ctx)
+	uuidAdmin, err := middleware.ExtractTokenUUID(ctx)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"err": err.Error()})
 		return
 	}
-	admin, err := middleware.Admin.Admin(middleware.Admin{Db: h.DB, UuidToFind: uuid})
+	admin, err := middleware.Admin.Admin(middleware.Admin{Db: h.DB, UuidToFind: uuidAdmin})
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"err": err.Error(),
@@ -46,7 +46,7 @@ func (h handler) CreateBank(ctx *gin.Context) {
 	bank := models.Bank{
 		Money:        body.Money,
 		Lieux:        body.Lieux,
-		ID:           rand.Uint32(),
+		ID:           uuid.New(),
 		MaintennedBy: admin.UUID.String(),
 	}
 
@@ -57,7 +57,7 @@ func (h handler) CreateBank(ctx *gin.Context) {
 		return
 	}
 
-	admin.TotalSend = admin.TotalSend + int(body.Money)
+	admin.TotalSend = admin.TotalSend + body.Money
 	h.DB.Save(&admin)
 	ctx.JSON(http.StatusOK, gin.H{
 		"res": bank,

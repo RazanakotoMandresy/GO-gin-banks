@@ -9,7 +9,7 @@ import (
 // models money
 type Money struct {
 	ID         uuid.UUID      `gorm:"id;primarykey" json:"uuid"`
-	Totals     int32          `json:"totals"`
+	Totals     uint           `json:"totals"`
 	Created_at time.Time      `json:"created_at"`
 	Updated_at time.Time      `json:"updated_at"`
 	Deleted_at gorm.DeletedAt `json:"deleted_at"`

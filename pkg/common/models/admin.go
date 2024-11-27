@@ -16,5 +16,5 @@ type Admin struct {
 	Name       string         `gorm:"name;unique"`
 	Passwords  string         `json:"passwords"`
 	Role       string         `json:"role"`
-	TotalSend  int            `json:"total_send"`
+	TotalSend  uint           `json:"total_send"`
 }

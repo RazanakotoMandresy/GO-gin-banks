@@ -15,7 +15,7 @@ type BankAdminReq struct {
 	RootPass   string `json:"root"`
 }
 type BankReq struct {
-	Money    int32  `json:"money"`
+	Money    uint  `json:"money"`
 	Lieux    string `json:"lieux"`
 	Password string `json:"password"`
 }

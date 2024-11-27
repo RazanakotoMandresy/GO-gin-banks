@@ -35,7 +35,7 @@ func (h handler) getUser(ctx *gin.Context) {
 		"AppUserName":   users.AppUserName,
 	})
 }
-func (h handler) getTotals(ctx *gin.Context, uuidSender, uuidRecepteur string) (int32, error) {
+func (h handler) getTotals(ctx *gin.Context, uuidSender, uuidRecepteur string) (uint, error) {
 	var totals models.Money
 	res := h.DB.Where("send_by = ? AND sent_to = ?", uuidSender, uuidRecepteur).First(&totals)
 	if res.Error != nil {
