@@ -18,7 +18,7 @@ jobs:
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
       - name: sast gosec
-        run: gosec -exclude=G104  ./...
+        run: gosec -exclude=G104 -fmt=json -out=gosec-warning.json ./...
         
 
       - name: Set up QEMU
@@ -38,3 +38,12 @@ jobs:
         with:
           push: true
           tags: razanakotomandresy/hotels-go:latest
+      - name: Docker Scout
+        id: docker-scout
+        uses: docker/scout-action@v1
+        with:
+          command: cves,recommendations,compare
+          to-latest: true
+          ignore-base: true
+          ignore-unchanged: true
+          only-fixed: true
