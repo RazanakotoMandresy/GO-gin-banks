@@ -4,9 +4,10 @@ WORKDIR /app
 
 COPY go.mod go.sum ./
 
+COPY . .
+
 RUN go mod tidy && go mod vendor
 
-COPY . .
 
 RUN go build -o  bin/backend .
 
